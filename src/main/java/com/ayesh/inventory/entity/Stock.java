@@ -1,9 +1,6 @@
 package com.ayesh.inventory.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Table(
+        name = "stock",
+        indexes = {
+                @Index(name = "idx_stock_quantity", columnList = "quantity")
+        }
+)
+
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
