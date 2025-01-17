@@ -1,6 +1,4 @@
 package com.ayesh.inventory.specification;
-
-import com.ayesh.inventory.entity.Product;
 import com.ayesh.inventory.entity.Stock;
 import org.springframework.data.jpa.domain.Specification;
 
