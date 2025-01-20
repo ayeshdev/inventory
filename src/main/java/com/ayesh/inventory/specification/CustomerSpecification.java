@@ -1,7 +1,6 @@
 package com.ayesh.inventory.specification;
 
 import com.ayesh.inventory.entity.Customer;
-import com.ayesh.inventory.entity.Purchase;
 import org.springframework.data.jpa.domain.Specification;
 
 public class CustomerSpecification {
