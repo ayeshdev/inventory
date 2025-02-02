@@ -1,0 +1,23 @@
+# Ignore Maven output
+#target/
+
+# Ignore version control files
+.git/
+.gitignore
+.gitattributes
+
+# Ignore IDE-specific files
+.idea/
+*.iml
+
+# Ignore temporary or OS-specific files
+*.log
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ignore Docker-related files
+docker-compose.yml
+
+# Ignore anything you don't want in the image
+HELP.md

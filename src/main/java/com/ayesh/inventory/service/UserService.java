@@ -2,21 +2,38 @@ package com.ayesh.inventory.service;
 
 import com.ayesh.inventory.dao.UserDao;
 import com.ayesh.inventory.entity.User;
+import com.ayesh.inventory.model.UserPrincipal;
 import com.ayesh.inventory.specification.UserSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
+
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public ResponseEntity<List<User>> getAllUsers() {
         try{
@@ -101,4 +118,18 @@ public class UserService {
             throw new RuntimeException("Error while searching for users", e);
         }
     }
+
+    public User register(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userDao.save(user);
+    }
+
+    public String verify(User user){
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(user.getUsername());
+        return "fail";
+    }
+
 }
